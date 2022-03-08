@@ -3,7 +3,7 @@ import {Link, Redirect, Route, Switch} from "react-router-dom";
 import Users from "../../pages/Users";
 import Posts from "../../pages/Posts";
 import PostDetails from "../../pages/PostDetails";
-import AddPost from "../../pages/AddPost";
+import AddPost from "../../pages/addPost/AddPost";
 
 const Layout = (props) => {
     return (

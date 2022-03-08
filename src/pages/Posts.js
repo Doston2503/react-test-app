@@ -1,6 +1,8 @@
 import React, {useEffect, useReducer} from 'react';
 import {Link, useParams} from 'react-router-dom'
 import axios from "axios";
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const initialState = {
     posts: [],
@@ -77,7 +79,9 @@ function Posts(props) {
                     <div className="col-xl-4 my-3" key={item.id}>
                         <div className="p-3 bg-white border h-100">
                             <h5>{item.id}.{item.title}</h5>
-                            <p>{item.body}</p>
+
+                            <ReactMarkdown children={item.body} remarkPlugins={[remarkGfm]} />
+
                             <Link to={'/users/' + userId + '/' + item.id}>
                                 ...comments
                             </Link>

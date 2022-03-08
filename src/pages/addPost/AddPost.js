@@ -1,18 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {toast} from "react-toastify";
+import md from './md';
+
+import TextareaMarkdownEditor from "react-textarea-markdown-editor";
+import axios from "axios";
 
 function AddPost(props) {
+    const [postBody, setPostBody] = useState('');
+
+    const handleBody = (event) => {
+        setPostBody(event);
+    };
+
     function addPost(e) {
         e.preventDefault();
         const post = {
             title: e.target.title.value,
-            body: e.target.body.value,
+            body: postBody
         };
-        if (post.title.trim().length > 0 && post.body.trim().length > 0) {
+
+        if (post.title.trim().length > 0 && postBody.trim().length > 0) {
             toast.success('Muvaffaqqiyatli yuborildi !!!');
-            e.target.reset()
+            addNewPost(post);
+            e.target.reset();
+            setPostBody('');
         }
 
+    }
+
+    async function addNewPost(newPost) {
+        const res = await axios.post('https://jsonplaceholder.typicode.com/posts', {
+            post: newPost
+        })
+        console.log(res)
     }
 
     return (
@@ -30,11 +50,12 @@ function AddPost(props) {
                                        name='title'
                                        className='form-control my-3'
                                 />
-                                <textarea name="body"
-                                          placeholder="add body"
-                                          className='form-control my-3'
-                                          rows="10"/>
 
+
+                                <TextareaMarkdownEditor
+                                    value={postBody}
+                                    onChange={handleBody}
+                                    doParse={text => md.render(text)}/>
                                 <button className="btn btn-dark d-block w-100 mt-4">
                                     add post
                                 </button>
